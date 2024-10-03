@@ -1,0 +1,7 @@
+*.bmp
+main.spec
+/build/*
+/dist/*
+
+\build\*
+\dist\*

@@ -5,8 +5,8 @@ import random as rand
 import tkinter.messagebox as tkMsg
 
 #Variables
-inten = 8*1000 #corruption intensity
-debug = True #console log stuff
+#inten = 8*1000 #corruption intensity ##Unused
+debug = False #console log stuff
 do_destruction = True
 
 # debug check
@@ -42,31 +42,25 @@ else:
                     dirList = os.listdir(os.path.expanduser(direc))
                     randChoice = rand.choice(dirList)
 
-            # Opens the file and converts it to base64
+            # Opens the file and converts it to an array
             with open(direc,'rb') as bFile:
-                b64Raw = base64.b64encode(bFile.read())
-                b64File = b64Raw.decode('utf-8')
-            #remove b64Raw data
-                del(b64Raw)
+                arrayList = list(bFile.read())
 
-            # Convert to list and shuffle values
-            b64List = list(b64File)
 
             # This try and except thing is pretty stupid since this shouldn't go out of range but I'm still adding it here
             #This for loop swaps values with neighboring ones
             try:
-                for i in range(inten):
-                    b64List[rand.randint(0,len(b64List)-1)] = rand.choice(b64List)
+                for i in range(round(len(arrayList)/10)):
+                    arrayList[rand.randint(0,len(arrayList)-1)] = rand.choice(arrayList)
             except:
                 print('failed to shift file')
 
-            #convert b64 list to string
-            b64File = ''.join(b64List)
+            #convert array list to bytearray
+            byteArray = bytearray(arrayList)
 
             #export file
-            b64File.encode('utf-8')
             finalFile = open(direc, 'wb')
-            finalFile.write(base64.b64decode(b64File))
+            finalFile.write(bytes(byteArray))
             finalFile.close()
 
             # Debug log stuff
