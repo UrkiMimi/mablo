@@ -1,7 +1,9 @@
 *.bmp
+.DS_Store
 main.spec
 /build/*
 /dist/*
 
 \build\*
 \dist\*
+.DS_Store
