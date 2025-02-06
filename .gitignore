@@ -2,7 +2,9 @@
 .DS_Store
 main.spec
 /build/*
+/builds/*
 /dist/*
+/main.*/*
 /__pycache__/*
 
 \build\*

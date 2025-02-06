@@ -1,1 +1,2 @@
 python -m PyInstaller --onefile --noconsole --icon=mablo.ico main.py
+python -m nuitka --onefile --disable-console --windows-icon-from-ico=mablo.ico --enable-plugin=tk-inter --product-name="mablo" --product-version="0.2.1" main.py
