@@ -1,6 +1,8 @@
 *.bmp
 .DS_Store
 main.spec
+*.exe
+
 /build/*
 /builds/*
 /dist/*
