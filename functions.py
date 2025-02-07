@@ -53,7 +53,7 @@ def Bugcheck(code):
         funny = ntdl.RtlAdjustPrivilege(19, True, False, ctypes.pointer(ctypes.c_bool()))
 
         #do the funny
-        response = ctypes.c_ulong
+        response = ctypes.c_ulong()
         funny = ntdl.NtRaiseHardError(code, 0, 0, 0, 6, ctypes.byref(response))
     except:
         print('you win!')
