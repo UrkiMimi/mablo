@@ -9,7 +9,7 @@ from functions import *
 #inten = 8*1000 #corruption intensity ##Unused
 debug = False #console log stuff
 do_destruction = True
-skipCorruption = False
+skipCorruption = True
 admCheck = ctypes.windll.shell32.IsUserAnAdmin()
 
 
