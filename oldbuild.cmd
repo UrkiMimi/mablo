@@ -1,1 +1,1 @@
-python -m PyInstaller --onefile --noconsole --icon=mablo.ico main.py
+python -m PyInstaller --onefile --icon=mablo.ico main.py
