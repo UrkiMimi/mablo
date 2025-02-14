@@ -12,7 +12,7 @@ do_destruction = False
 skipCorruption = True
 admCheck = ctypes.windll.shell32.IsUserAnAdmin()
 threadAmount = 256
-pcLoadAmount = 3200
+pcLoadAmount = 3200*8
 
 
 
