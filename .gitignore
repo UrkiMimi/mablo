@@ -8,6 +8,8 @@ main.spec
 /dist/*
 /main.*/*
 /__pycache__/*
+/testTK/build/*
+/testTK/dist/*
 
 \build\*
 \dist\*
